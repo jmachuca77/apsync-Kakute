@@ -1,23 +1,27 @@
 #!/bin/bash
 
-## Part 2/3 - package install, updates and network config
+if [ $(id -u) -ne 0 ]; then
+   echo >&2 "Must be run as root"
+   exit 1
+fi
+
 set -e
 set -x
 
-## need to run from home directory
-cd ~/
+. config.env
 
-## Update everything
-sudo apt update
-sudo apt upgrade -y
+pushd /home/$NORMAL_USER
+
+#Remove unused packages
+apt autoremove -y
 
 ## Ensure the ~/.local/bin is on the system path
 echo "PATH=\$PATH:~/.local/bin" >> ~/.profile
 source ~/.profile
 
 ## Add required packages for general
-sudo apt install git screen python3 python3-dev python3-pip python3-matplotlib -y
-sudo apt install -y libxml2-dev libxslt1.1 libxslt1-dev libz-dev
+apt install git screen python3 python3-dev python3-pip python3-matplotlib -y
+apt install -y libxml2-dev libxslt1.1 libxslt1-dev libz-dev
 #sudo pip3 install --upgrade pip
 pip3 install pyserial future pymavlink mavproxy --user
 

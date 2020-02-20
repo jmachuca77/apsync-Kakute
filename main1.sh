@@ -35,7 +35,8 @@ echo "apsync:apsync" | chpasswd
 
 # stop systemd starting a getty on ttyS0:
 systemctl disable serial-getty@ttyS0.service
-perl -pe 's/ console=serial0,115200//' -i /boot/cmdline.txt
+perl -pe 's/console=ttyAMA0,115200//' -i /boot/config-5.3.0-1017-raspi2
+perl -pe 's/console=ttyAMA0,115200//' -i /boot/config-5.3.0-1018-raspi2
 
 ## Change hostname
 raspi-config nonint do_hostname apsync
